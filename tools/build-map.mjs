@@ -1,11 +1,12 @@
-// Builds design/world-map.svg: the locator map of the front page, with a numbered marker on the place
-// of each story. Run on the author's machine before render.mjs; the grader never runs it.
+// Builds the page's two maps from Natural Earth's 1:110m countries (public domain), given as the TopoJSON
+// file of the world-atlas package (https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json):
 //
+//   design/world-map.svg  the "where it happened" locator: Equal Earth, numbered pins for stories 1-11,
+//                         dots for the briefs 12-31, colour by region
+//   design/gulf-map.svg   the close-up of the northern Gulf for story 2
+//
+// Run on the author's machine before render.mjs; the grader never runs it.
 //   node tools/build-map.mjs <countries-110m.json>
-//
-// The input is Natural Earth's 1:110m countries (public domain) as TopoJSON, the countries-110m.json
-// file of the world-atlas package (https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json).
-// Projection: Equal Earth, cropped to latitudes 72N..40S so the map fits the page.
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -13,29 +14,41 @@ import { dirname, join } from 'node:path';
 
 const input = process.argv[2];
 if (!input) throw new Error('usage: node tools/build-map.mjs <countries-110m.json>');
-const out = join(dirname(fileURLToPath(import.meta.url)), '..', 'design', 'world-map.svg');
+const designDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'design');
 
-// ---------- the stories, by place ----------
-// n: number on the page; at: [lon, lat]; dx/dy: badge offset from the place in pixels (0 = on it);
-// label: place name; side: which side of the badge the label goes.
-const STORIES = [
-  { n: 1, at: [114.06, 22.54], dx: 0, dy: 0, label: 'Shenzhen', side: 'right', lead: true },
-  { n: 2, at: [47.98, 29.35], dx: 0, dy: 0, label: 'Kuwait', side: 'left' },
-  { n: 3, at: [30.72, 46.48], dx: 0, dy: 0, label: 'Odesa', side: 'right' },
-  { n: 4, at: [13.4, 52.52], dx: 0, dy: 0, label: 'Berlin', side: 'left' },
-  { n: 5, at: [90.26, 23.85], dx: -10, dy: -28, label: 'Dhaka', side: 'left' },
-  { n: 6, at: [39.4, 14.5], dx: 0, dy: 0, label: 'Ethiopia–Eritrea', side: 'left' },
-  { n: 7, at: [-149.9, 61.2], dx: 0, dy: 0, label: 'Alaska', side: 'right' },
-  { n: 8, at: [174.76, -36.85], dx: -6, dy: -18, label: 'New Zealand', side: 'left' },
-  { n: 9, at: [96.08, 19.76], dx: 8, dy: 22, label: 'Myanmar', side: 'right' },
+// ---------- regions and stories ----------
+export const REGION = {
+  asia: '#6b3fa0', mideast: '#c4581b', europe: '#1f5fa8',
+  americas: '#b3121f', africa: '#2f7d32', global: '#0f7c7c',
+};
+// Pins: stories 1-11 (n, region, [lon, lat], badge offset dx/dy in px). Story 7 (Voyager 1) is off the map.
+const PINS = [
+  { n: 1, r: 'asia', at: [114.06, 22.54], dx: 0, dy: 0 },
+  { n: 2, r: 'mideast', at: [47.98, 29.35], dx: 6, dy: -4 },
+  { n: 3, r: 'europe', at: [4.35, 50.85], dx: 4, dy: -12 },
+  { n: 4, r: 'mideast', at: [34.4, 31.4], dx: -8, dy: 10 },
+  { n: 5, r: 'americas', at: [-77.04, 38.9], dx: 0, dy: 0 },
+  { n: 6, r: 'global', at: [30.7, 36.9], dx: 2, dy: -14 },
+  { n: 8, r: 'europe', at: [-0.13, 51.5], dx: -14, dy: -4 },
+  { n: 9, r: 'asia', at: [85.8, 19.8], dx: -10, dy: 8 },
+  { n: 10, r: 'asia', at: [90.3, 23.8], dx: 4, dy: -12 },
+  { n: 11, r: 'global', at: [174.76, -36.85], dx: -4, dy: -8 },
 ];
-const LEAD_COUNTRIES = new Set(['China']);
+// Dots: the briefs that have a place.
+const DOTS = [
+  ['europe', 13.4, 52.5], ['americas', -66.9, 10.5], ['africa', 39.4, 14.5], ['africa', 30.2, 13.2],
+  ['africa', 36.8, -1.3], ['africa', 23.6, -2.9], ['asia', 96.1, 19.8], ['asia', 121.0, 14.6],
+  ['asia', 79.9, 6.9], ['mideast', 44.4, 33.3], ['europe', 20.5, 44.8], ['americas', -122.4, 37.8],
+  ['europe', 7.7, 45.1], ['europe', -2.6, 53.8],
+];
 const NEWS_COUNTRIES = new Set([
-  'Kuwait', 'Ukraine', 'Germany', 'Bangladesh', 'Ethiopia', 'Eritrea',
-  'United States of America', 'New Zealand', 'Myanmar',
+  'China', 'Kuwait', 'Ukraine', 'Israel', 'Palestine', 'United States of America', 'Turkey',
+  'United Kingdom', 'India', 'Bangladesh', 'New Zealand', 'Germany', 'Venezuela', 'Ethiopia',
+  'Eritrea', 'Sudan', 'Kenya', 'Dem. Rep. Congo', 'Myanmar', 'Philippines', 'Sri Lanka', 'Iraq',
+  'Serbia', 'Italy', 'Iran', 'Bahrain',
 ]);
 
-// ---------- Equal Earth projection ----------
+// ---------- projections ----------
 const A1 = 1.340264, A2 = -0.081106, A3 = 0.000893, A4 = 0.003796, M = Math.sqrt(3) / 2;
 function equalEarth(lon, lat) {
   const l = (lon * Math.PI) / 180;
@@ -43,19 +56,24 @@ function equalEarth(lon, lat) {
   const t2 = t * t, t6 = t2 * t2 * t2;
   const x = (l * Math.cos(t)) / (M * (A1 + 3 * A2 * t2 + t6 * (7 * A3 + 9 * A4 * t2)));
   const y = t * (A1 + A2 * t2 + t6 * (A3 + A4 * t2));
-  return [x, y];
+  return [x, -y];
 }
+// Plate carree with its x shrunk by cos(mid-latitude): fine for a small regional map.
+const localPlate = (lat0) => (lon, lat) => [lon * Math.cos((lat0 * Math.PI) / 180), -lat];
 
-const WIDTH = 976;
-const LAT_TOP = 72, LAT_BOTTOM = -40;
-const X_EDGE = equalEarth(180, 0)[0];
-const SCALE = WIDTH / (2 * X_EDGE);
-const Y_TOP = equalEarth(0, LAT_TOP)[1];
-const HEIGHT = Math.round((Y_TOP - equalEarth(0, LAT_BOTTOM)[1]) * SCALE);
-const px = (lon, lat) => {
-  const [x, y] = equalEarth(lon, lat);
-  return [(x + X_EDGE) * SCALE, (Y_TOP - y) * SCALE];
-};
+// Fits a projection's window [lonMin, lonMax] x [latMin, latMax] to width x height, centred.
+function fit(project, [lonMin, lonMax, latMin, latMax], width, height) {
+  const xs = [], ys = [];
+  for (let lon = lonMin; lon <= lonMax; lon += (lonMax - lonMin) / 40) {
+    for (const lat of [latMin, latMax, (latMin + latMax) / 2]) {
+      const [x, y] = project(lon, lat); xs.push(x); ys.push(y);
+    }
+  }
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const s = Math.min(width / (x1 - x0), height / (y1 - y0));
+  const ox = (width - s * (x1 - x0)) / 2, oy = (height - s * (y1 - y0)) / 2;
+  return (lon, lat) => { const [x, y] = project(lon, lat); return [ox + (x - x0) * s, oy + (y - y0) * s]; };
+}
 const r1 = (v) => Math.round(v * 10) / 10;
 
 // ---------- TopoJSON decoding ----------
@@ -66,84 +84,106 @@ const arcs = topo.arcs.map((arc) => {
   let x = 0, y = 0;
   return arc.map(([dx, dy]) => { x += dx; y += dy; return [x * sx + tx, y * sy + ty]; });
 });
-function ring(indices) {
-  const points = [];
-  indices.forEach((i, k) => {
-    const a = i >= 0 ? arcs[i] : arcs[~i].slice().reverse();
-    points.push(...(k === 0 ? a : a.slice(1)));
-  });
-  return points;
-}
-function ringPath(points) {
-  let d = '', prevLon = null;
-  for (const [lon, lat] of points) {
-    const [x, y] = px(lon, lat);
-    // Natural Earth cuts its shapes at the antimeridian; never draw a line across the map.
-    d += (prevLon === null || Math.abs(lon - prevLon) > 180 ? 'M' : 'L') + r1(x) + ',' + r1(y);
-    prevLon = lon;
-  }
-  return d + 'Z';
-}
-function geometryPath(g) {
-  const polygons = g.type === 'Polygon' ? [g.arcs] : g.type === 'MultiPolygon' ? g.arcs : [];
-  return polygons.map((rings) => rings.map((r) => ringPath(ring(r))).join('')).join('');
-}
-
-const land = [], news = [], lead = [];
-for (const g of topo.objects.countries.geometries) {
-  const name = g.properties?.name;
-  if (name === 'Antarctica') continue;
-  const d = geometryPath(g);
-  (LEAD_COUNTRIES.has(name) ? lead : NEWS_COUNTRIES.has(name) ? news : land).push(d);
-}
-
-// ---------- graticule: meridians every 30 degrees, parallels every 20 ----------
-const graticule = [];
-for (let lon = -180; lon <= 180; lon += 30) {
-  let d = '';
-  for (let lat = LAT_BOTTOM; lat <= LAT_TOP; lat += 2) {
-    const [x, y] = px(lon, lat);
-    d += (lat === LAT_BOTTOM ? 'M' : 'L') + r1(x) + ',' + r1(y);
-  }
-  graticule.push(d);
-}
-for (const lat of [-20, 0, 20, 40, 60]) {
-  const [x0, y] = px(-180, lat);
-  const [x1] = px(180, lat);
-  graticule.push(`M${r1(x0)},${r1(y)}L${r1(x1)},${r1(y)}`);
-}
-
-// ---------- markers ----------
-const markers = STORIES.map((s) => {
-  const [x, y] = px(...s.at);
-  const bx = x + s.dx, by = y + s.dy;
-  const r = s.lead ? 15 : 12;
-  const fill = s.lead ? '#c1121f' : '#0d1b2a';
-  const lx = s.side === 'right' ? bx + r + 5 : bx - r - 5;
-  const anchor = s.side === 'right' ? 'start' : 'end';
-  const leader = s.dx || s.dy
-    ? `<line x1="${r1(x)}" y1="${r1(y)}" x2="${r1(bx)}" y2="${r1(by)}" class="leader"/><circle cx="${r1(x)}" cy="${r1(y)}" r="2.6" fill="${fill}"/>`
-    : '';
-  return `<g>${leader}<circle cx="${r1(bx)}" cy="${r1(by)}" r="${r}" fill="${fill}" class="badge"/>` +
-    `<text x="${r1(bx)}" y="${r1(by + (s.lead ? 5.5 : 4.6))}" class="num${s.lead ? ' lead' : ''}">${s.n}</text>` +
-    `<text x="${r1(lx)}" y="${r1(by + 4.5)}" text-anchor="${anchor}" class="place${s.lead ? ' lead' : ''}">${s.label}</text></g>`;
+const ring = (indices) => indices.flatMap((i, k) => {
+  const a = i >= 0 ? arcs[i] : arcs[~i].slice().reverse();
+  return k === 0 ? a : a.slice(1);
 });
+function geometryPath(g, px) {
+  const polygons = g.type === 'Polygon' ? [g.arcs] : g.type === 'MultiPolygon' ? g.arcs : [];
+  let d = '';
+  for (const rings of polygons) for (const r of rings) {
+    let prevLon = null;
+    for (const [lon, lat] of ring(r)) {
+      const [x, y] = px(lon, lat);
+      // Natural Earth cuts its shapes at the antimeridian; never draw a line across the map.
+      d += (prevLon === null || Math.abs(lon - prevLon) > 180 ? 'M' : 'L') + r1(x) + ',' + r1(y);
+      prevLon = lon;
+    }
+    d += 'Z';
+  }
+  return d;
+}
+function countryPaths(px, highlight) {
+  const land = [], news = [];
+  for (const g of topo.objects.countries.geometries) {
+    if (g.properties?.name === 'Antarctica') continue;
+    (highlight.has(g.properties?.name) ? news : land).push(geometryPath(g, px));
+  }
+  return { land: land.join(''), news: news.join('') };
+}
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
-<style>
-.ocean{fill:#e9eff4}.grat{fill:none;stroke:#d5dee6;stroke-width:0.7}
-.land{fill:#d9d4c9;stroke:#f7f5f0;stroke-width:0.5}.news{fill:#9fb0c4;stroke:#f7f5f0;stroke-width:0.5}.leadc{fill:#e3a19a;stroke:#f7f5f0;stroke-width:0.5}
-.badge{stroke:#fff;stroke-width:2}.leader{stroke:#0d1b2a;stroke-width:1.4}
-.num{font:700 14px "Segoe UI",Arial,sans-serif;fill:#fff;text-anchor:middle}.num.lead{font-size:17px}
-.place{font:700 13.5px "Segoe UI",Arial,sans-serif;fill:#0d1b2a;paint-order:stroke;stroke:#fff;stroke-width:3.5;stroke-linejoin:round}.place.lead{fill:#a10f1a;font-size:15px}
-</style>
-<rect class="ocean" width="${WIDTH}" height="${HEIGHT}"/>
-<path class="grat" d="${graticule.join('')}"/>
-<path class="land" d="${land.join('')}"/>
-<path class="news" d="${news.join('')}"/>
-<path class="leadc" d="${lead.join('')}"/>
-${markers.join('\n')}
+// ---------- the world locator ----------
+function worldMap(width) {
+  const LAT_TOP = 72, LAT_BOTTOM = -40;
+  const X_EDGE = equalEarth(180, 0)[0];
+  const scale = width / (2 * X_EDGE);
+  const yTop = equalEarth(0, LAT_TOP)[1];
+  const height = Math.round((equalEarth(0, LAT_BOTTOM)[1] - yTop) * scale);
+  const px = (lon, lat) => { const [x, y] = equalEarth(lon, lat); return [(x + X_EDGE) * scale, (y - yTop) * scale]; };
+  const { land, news } = countryPaths(px, NEWS_COUNTRIES);
+  const dots = DOTS.map(([r, lon, lat]) => {
+    const [x, y] = px(lon, lat);
+    return `<circle cx="${r1(x)}" cy="${r1(y)}" r="3.2" fill="${REGION[r]}" stroke="#fff" stroke-width="1"/>`;
+  });
+  const pins = PINS.map((p) => {
+    const [x, y] = px(...p.at);
+    const bx = x + p.dx, by = y + p.dy;
+    const leader = p.dx || p.dy
+      ? `<line x1="${r1(x)}" y1="${r1(y)}" x2="${r1(bx)}" y2="${r1(by)}" stroke="#0d1b2a" stroke-width="1"/><circle cx="${r1(x)}" cy="${r1(y)}" r="1.8" fill="#0d1b2a"/>`
+      : '';
+    return `${leader}<circle cx="${r1(bx)}" cy="${r1(by)}" r="8" fill="${REGION[p.r]}" stroke="#fff" stroke-width="1.5"/>` +
+      `<text x="${r1(bx)}" y="${r1(by + 3.6)}" class="n">${p.n}</text>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+<style>.n{font:700 10px "Segoe UI",Arial,sans-serif;fill:#fff;text-anchor:middle}</style>
+<rect width="${width}" height="${height}" fill="#e8eef3"/>
+<path d="${land}" fill="#d8d3c8" stroke="#f7f5f0" stroke-width="0.4"/>
+<path d="${news}" fill="#b9c4d1" stroke="#f7f5f0" stroke-width="0.4"/>
+${dots.join('\n')}
+${pins.join('\n')}
 </svg>
 `;
-writeFileSync(out, svg);
-console.log(`world-map.svg: ${WIDTH} x ${HEIGHT}, ${svg.length} bytes`);
+}
+
+// ---------- the Gulf close-up for story 2 ----------
+function gulfMap(width, height) {
+  const px = fit(localPlate(27), [43.2, 60.2, 24.0, 30.4], width, height);
+  const { land, news } = countryPaths(px, new Set(['Iran', 'Kuwait']));
+  const P = (lon, lat) => px(lon, lat).map(r1);
+  const [kx, ky] = P(47.98, 29.35);   // Ali Al Salem air base, Kuwait
+  const [bx, by] = P(50.55, 26.07);   // Bahrain
+  const [qx, qy] = P(55.9, 26.8);     // Qeshm Island
+  const [ax, ay] = P(51.0, 30.0);     // launch area, Iran
+  const [cx, cy] = P(51.6, 28.9);
+  const burst = (x, y, color) => {
+    let pts = '';
+    for (let i = 0; i < 16; i++) {
+      const a = (i * Math.PI) / 8, rr = i % 2 ? 4 : 9;
+      pts += `${r1(x + rr * Math.cos(a))},${r1(y + rr * Math.sin(a))} `;
+    }
+    return `<polygon points="${pts.trim()}" fill="${color}" stroke="#fff" stroke-width="1"/>`;
+  };
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+<style>
+.lbl{font:800 10.5px "Segoe UI",Arial,sans-serif;letter-spacing:1.5px;fill:#5b6472}
+.tag{font:700 10.5px "Segoe UI",Arial,sans-serif;fill:#0d1b2a;paint-order:stroke;stroke:#fff;stroke-width:3;stroke-linejoin:round}
+</style>
+<rect width="${width}" height="${height}" fill="#dbe7ef"/>
+<path d="${land}" fill="#e6dfd0" stroke="#fffaf0" stroke-width="0.8"/>
+<path d="${news}" fill="#d6c3a5" stroke="#fffaf0" stroke-width="0.8"/>
+<path d="M${ax},${ay} Q${r1((ax + kx) / 2)},${r1(ay - 22)} ${kx},${ky}" fill="none" stroke="#c4581b" stroke-width="2" stroke-dasharray="5 4"/>
+<path d="M${cx},${cy} Q${r1((cx + bx) / 2 + 10)},${r1((cy + by) / 2)} ${bx},${by}" fill="none" stroke="#c4581b" stroke-width="2" stroke-dasharray="5 4"/>
+${burst(kx, ky, '#c4581b')}
+${burst(bx, by, '#0d1b2a')}
+<circle cx="${qx}" cy="${qy}" r="4" fill="#1f5fa8" stroke="#fff" stroke-width="1.2"/>
+<text x="${r1(width * 0.66)}" y="${r1(height * 0.3)}" class="lbl">IRAN</text>
+<text x="${r1(kx - 8)}" y="${r1(ky + 18)}" class="tag" text-anchor="middle">KUWAIT · Ali Al Salem</text>
+<text x="${r1(bx - 12)}" y="${r1(by + 20)}" class="tag" text-anchor="middle">BAHRAIN · intercepted</text>
+<text x="${r1(qx)}" y="${r1(qy + 17)}" class="tag" text-anchor="middle">QESHM · US strike</text>
+</svg>
+`;
+}
+
+writeFileSync(join(designDir, 'world-map.svg'), worldMap(456));
+writeFileSync(join(designDir, 'gulf-map.svg'), gulfMap(316, 118));
+console.log('wrote design/world-map.svg and design/gulf-map.svg');

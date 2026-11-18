@@ -4,30 +4,34 @@
 [![rank](https://make.fun/badge/news-image-20261118/F00M/news-image-2026-11-18/rank.svg)](https://make.fun/bounty/news-image-20261118/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261118)
 [![reward](https://make.fun/badge/news-image-20261118/F00M/news-image-2026-11-18/reward.svg)](https://make.fun/bounty/news-image-20261118?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261118)
 
-The world's news of **Wednesday 18 November 2026** on one page, laid out like a news agency's daily briefing:
-a 1024 × 1024 picture with the date across the top, a world map with a numbered marker on the place of each
-story, the day's lead story, and eight more stories from every region, each with a one-line explanation.
+The world's news of **Wednesday 18 November 2026** on one page, laid out like a newspaper front page:
+a 1024 × 1024 picture with the date across the top, three illustrated lead stories, eight more stories with
+small icons, a world map with a marker on the place of each story, key figures, and a numbered list of twenty
+more stories. 31 stories in all, from every continent, each one checked to have happened or been first
+reported on 18 November.
 
 ![The world on 18 November 2026](entry.png)
 
-What it shows:
+The lead stories:
 
-- **China / APEC:** Xi greets Trump on the tarmac in Shenzhen; Putin arrives for talks with Xi, with Trump–Xi–Putin talks set for Thursday. Xi says China will oppose protectionism; earlier in Manila, Trump and Marcos announce a trade deal.
-- **Gulf:** Iran's drones target a US base in Kuwait and Bahrain intercepts attacks, after a US strike on Iran's Qeshm Island.
-- **Ukraine:** Russian strikes kill at least five.
-- **Germany:** Merz's coalition cuts the electricity tax to the EU minimum from January 2027.
-- **Bangladesh:** police clash with garment workers demanding higher wages.
-- **Horn of Africa:** Ethiopia and Eritrea mass troops on their border.
-- **United States:** AP calls the last Senate race; Democrat Mary Peltola wins in Alaska.
-- **Culture:** GTA VI goes on sale, starting in New Zealand.
-- **Myanmar:** the government will review its ties with ASEAN.
+1. **APEC, Shenzhen:** Xi meets Trump at the airport; Trump and Putin shake hands at the welcome banquet, their first meeting since 2025; three-way talks are set for Thursday.
+2. **Iran war:** Iran's drones target the US air base at Ali Al Salem in Kuwait, and Bahrain intercepts Iranian attacks, after a US strike on Qeshm Island. Shown on a close-up map of the northern Gulf.
+3. **Ukraine:** the EU proposes a €45bn loan (€20bn budget, €25bn military) for 2027, repaid only if Russia pays reparations; Russian strikes kill at least five.
+
+Then: Israeli tanks push into central Gaza; Democrats nominate Hakeem Jeffries for speaker; COP31 splits over a
+fossil-fuel phase-out; Voyager 1 reaches one light-day from Earth; UK inflation rises to 3.6%; Cyclone Akvan
+nears India; garment workers clash with police near Dhaka; GTA VI goes on sale. The list adds Germany,
+Venezuela, Ethiopia and Eritrea, Sudan, Kenya, DR Congo, Myanmar, the Philippines, Sri Lanka, Iraq, Serbia,
+Russia, the US, tennis, oil, and NATO.
 
 How it is made:
 
-1. [tools/build-map.mjs](tools/build-map.mjs) draws the locator map, [design/world-map.svg](design/world-map.svg),
-   from Natural Earth's 1:110m countries (public domain) in the Equal Earth projection, shading the countries
-   in the news and placing a numbered marker on each story's place.
-2. [design/front-page.html](design/front-page.html) is the page: hand-written HTML and CSS around that map.
+1. [tools/build-map.mjs](tools/build-map.mjs) draws two maps from Natural Earth's 1:110m countries (public
+   domain): the world locator, [design/world-map.svg](design/world-map.svg), in the Equal Earth projection, with
+   the countries in the news shaded and a numbered pin on each story's place; and the close-up of the northern
+   Gulf, [design/gulf-map.svg](design/gulf-map.svg), for the Iran story.
+2. [design/front-page.html](design/front-page.html) is the page: hand-written HTML and CSS with inline SVG
+   illustrations and icons around those maps.
 3. [tools/render.mjs](tools/render.mjs) renders the page to `entry.png` with a local headless Chrome and checks
    the size limits.
 4. The entry program, [main.ts](main.ts), runs with no network: it checks the stored PNG and copies it to
