@@ -4,3 +4,4 @@ out2/
 .env
 .env.*
 *keypair*.json
+countries-110m.json

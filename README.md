@@ -4,9 +4,9 @@
 [![rank](https://make.fun/badge/news-image-20261118/F00M/news-image-2026-11-18/rank.svg)](https://make.fun/bounty/news-image-20261118/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261118)
 [![reward](https://make.fun/badge/news-image-20261118/F00M/news-image-2026-11-18/reward.svg)](https://make.fun/bounty/news-image-20261118?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261118)
 
-The world's news of **Wednesday 18 November 2026** on one front page: a 1024 × 1024 picture with the date
-across the top, the day's lead story drawn as a scene, and eight more stories from every region, each with
-its own small illustration and a one-line explanation.
+The world's news of **Wednesday 18 November 2026** on one page, laid out like a news agency's daily briefing:
+a 1024 × 1024 picture with the date across the top, a world map with a numbered marker on the place of each
+story, the day's lead story, and eight more stories from every region, each with a one-line explanation.
 
 ![The world on 18 November 2026](entry.png)
 
@@ -22,10 +22,16 @@ What it shows:
 - **Culture:** GTA VI goes on sale, starting in New Zealand.
 - **Myanmar:** the government will review its ties with ASEAN.
 
-How it is made: [design/front-page.html](design/front-page.html) is the page, hand-written HTML with inline SVG
-drawings and no outside assets. [tools/render.mjs](tools/render.mjs) renders it to `entry.png` with a local
-headless Chrome and checks the size limits. The entry program, [main.ts](main.ts), runs with no network: it
-checks the stored PNG and copies it to `/output/entry.png`, so every run writes the same bytes.
+How it is made:
+
+1. [tools/build-map.mjs](tools/build-map.mjs) draws the locator map, [design/world-map.svg](design/world-map.svg),
+   from Natural Earth's 1:110m countries (public domain) in the Equal Earth projection, shading the countries
+   in the news and placing a numbered marker on each story's place.
+2. [design/front-page.html](design/front-page.html) is the page: hand-written HTML and CSS around that map.
+3. [tools/render.mjs](tools/render.mjs) renders the page to `entry.png` with a local headless Chrome and checks
+   the size limits.
+4. The entry program, [main.ts](main.ts), runs with no network: it checks the stored PNG and copies it to
+   `/output/entry.png`, so every run writes the same bytes.
 
 ## Run it
 
@@ -33,9 +39,11 @@ checks the stored PNG and copies it to `/output/entry.png`, so every run writes 
 mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
-To re-render the picture from the HTML (needs Chrome or Edge installed):
+To rebuild the map and re-render the picture (needs Chrome or Edge installed):
 
 ```sh
+curl -sSLo countries-110m.json https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json
+node tools/build-map.mjs countries-110m.json
 node tools/render.mjs
 ```
 
