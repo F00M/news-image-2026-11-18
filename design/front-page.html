@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The world on 18 November 2026</title>
+<style>
+  :root {
+    --paper: #f5f0e6;
+    --ink: #15171c;
+    --muted: #4a4f5a;
+    --rule: #c9bfae;
+    --red: #b3121f;
+    --navy: #1d2b4f;
+    --card: #fffdf8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1024px; height: 1024px; overflow: hidden; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, sans-serif;
+    position: relative;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    position: absolute; left: 24px; right: 24px; top: 16px; height: 104px;
+    border-bottom: 4px double var(--ink);
+  }
+  .kicker {
+    font-size: 17px; font-weight: 800; letter-spacing: 3px; color: var(--red);
+    text-transform: uppercase;
+  }
+  .date {
+    font-family: Georgia, "Times New Roman", serif; font-weight: 700;
+    font-size: 58px; line-height: 64px; letter-spacing: -0.5px;
+  }
+  /* ---------- lead story ---------- */
+  .lead {
+    position: absolute; left: 24px; right: 24px; top: 134px; height: 296px;
+    background: var(--card); border: 1px solid var(--rule);
+    display: flex; overflow: hidden;
+  }
+  .lead svg { flex: 0 0 440px; width: 440px; height: 294px; display: block; }
+  .lead .text { padding: 16px 22px 14px 24px; display: flex; flex-direction: column; }
+  .tag {
+    font-size: 15px; line-height: 18px; font-weight: 800; letter-spacing: 1.6px;
+    text-transform: uppercase; color: var(--red);
+  }
+  .lead h1 {
+    font-family: Georgia, "Times New Roman", serif; font-weight: 700;
+    font-size: 40px; line-height: 43px; margin-top: 8px; text-wrap: balance;
+  }
+  .lead p { font-size: 18.5px; line-height: 25px; color: #2b2f38; margin-top: 12px; }
+  .lead .also {
+    list-style: none; margin-top: auto; padding-top: 9px; border-top: 1px solid var(--rule);
+    font-size: 16px; line-height: 23px; font-weight: 600; color: var(--navy);
+  }
+  .lead .also li::before { content: "▸ "; color: var(--red); }
+
+  /* ---------- story grid ---------- */
+  .grid {
+    position: absolute; left: 24px; right: 24px; top: 444px; height: 536px;
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 10px 14px;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--rule); overflow: hidden;
+    display: flex; align-items: center; padding: 6px 12px 6px 10px;
+  }
+  .card svg { flex: 0 0 92px; width: 92px; height: 92px; margin-right: 12px; }
+  .card h2 {
+    font-family: Georgia, "Times New Roman", serif; font-weight: 700;
+    font-size: 23px; line-height: 25px; margin-top: 2px; text-wrap: balance;
+  }
+  .card p { font-size: 15.5px; line-height: 19px; color: var(--muted); margin-top: 3px; }
+
+  /* ---------- footer ---------- */
+  .footer {
+    position: absolute; left: 24px; right: 24px; bottom: 10px; height: 26px;
+    border-top: 2px solid var(--ink); padding-top: 5px;
+    display: flex; justify-content: space-between;
+    font-size: 13.5px; font-weight: 600; color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="kicker">The day's world news in one picture</div>
+  <div class="date">Wednesday, 18 November 2026</div>
+</header>
+
+<!-- LEAD: APEC in Shenzhen -->
+<section class="lead">
+  <svg viewBox="15 0 440 294" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" aria-label="Airliner on a Shenzhen tarmac at dusk, red carpet and US, Chinese and Russian flags">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1d2b4f"/>
+        <stop offset="0.55" stop-color="#c7646a"/>
+        <stop offset="1" stop-color="#f3b46a"/>
+      </linearGradient>
+      <linearGradient id="tarmac" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#4b4f59"/>
+        <stop offset="1" stop-color="#2a2d34"/>
+      </linearGradient>
+    </defs>
+    <rect width="470" height="316" fill="url(#sky)"/>
+    <!-- Shenzhen skyline -->
+    <g fill="#2a2440" opacity="0.92">
+      <rect x="8" y="150" width="26" height="70"/>
+      <rect x="38" y="128" width="20" height="92"/>
+      <rect x="62" y="160" width="30" height="60"/>
+      <rect x="96" y="104" width="22" height="116"/>
+      <polygon points="96,104 107,84 118,104"/>
+      <rect x="122" y="140" width="28" height="80"/>
+      <rect x="154" y="120" width="18" height="100"/>
+      <rect x="176" y="70" width="26" height="150"/>
+      <polygon points="176,70 189,40 202,70"/>
+      <rect x="206" y="132" width="30" height="88"/>
+      <rect x="240" y="150" width="22" height="70"/>
+      <rect x="266" y="112" width="24" height="108"/>
+      <rect x="294" y="140" width="34" height="80"/>
+      <rect x="332" y="96" width="20" height="124"/>
+      <rect x="356" y="150" width="30" height="70"/>
+      <rect x="390" y="126" width="24" height="94"/>
+      <rect x="418" y="146" width="44" height="74"/>
+    </g>
+    <g fill="#f6d38a" opacity="0.7">
+      <rect x="181" y="84" width="4" height="4"/><rect x="193" y="96" width="4" height="4"/>
+      <rect x="181" y="110" width="4" height="4"/><rect x="101" y="120" width="4" height="4"/>
+      <rect x="337" y="112" width="4" height="4"/><rect x="271" y="128" width="4" height="4"/>
+      <rect x="43" y="144" width="4" height="4"/><rect x="395" y="140" width="4" height="4"/>
+    </g>
+    <!-- tarmac -->
+    <rect x="0" y="216" width="470" height="100" fill="url(#tarmac)"/>
+    <g stroke="#e8e2d0" stroke-width="3" stroke-dasharray="22 16" opacity="0.6">
+      <line x1="0" y1="300" x2="470" y2="300"/>
+    </g>
+    <!-- airliner -->
+    <g>
+      <path d="M40 196 Q40 176 70 174 L330 174 Q368 176 380 188 Q384 196 372 202 L60 206 Q40 206 40 196 Z" fill="#f4f6fa" stroke="#9aa3b5" stroke-width="1.5"/>
+      <path d="M58 174 L36 120 L64 120 L104 174 Z" fill="#dfe4ee" stroke="#9aa3b5" stroke-width="1.5"/>
+      <path d="M196 194 L246 194 L186 226 L164 226 Z" fill="#cfd5e2" stroke="#9aa3b5" stroke-width="1.5"/>
+      <rect x="200" y="200" width="30" height="11" rx="5.5" fill="#b9c1d1" stroke="#8d95a6"/>
+      <rect x="70" y="182" width="290" height="5" fill="#1d2b4f"/>
+      <g fill="#7f8aa3">
+        <rect x="120" y="178" width="8" height="8" rx="2"/><rect x="136" y="178" width="8" height="8" rx="2"/>
+        <rect x="152" y="178" width="8" height="8" rx="2"/><rect x="168" y="178" width="8" height="8" rx="2"/>
+        <rect x="184" y="178" width="8" height="8" rx="2"/><rect x="200" y="178" width="8" height="8" rx="2"/>
+        <rect x="216" y="178" width="8" height="8" rx="2"/><rect x="232" y="178" width="8" height="8" rx="2"/>
+        <rect x="248" y="178" width="8" height="8" rx="2"/><rect x="264" y="178" width="8" height="8" rx="2"/>
+      </g>
+      <path d="M352 180 Q366 182 372 190 L352 190 Z" fill="#33415f"/>
+      <rect x="300" y="178" width="14" height="26" rx="2" fill="#c9d0de" stroke="#9aa3b5"/>
+      <circle cx="96" cy="210" r="6" fill="#222"/><circle cx="330" cy="210" r="6" fill="#222"/>
+    </g>
+    <!-- boarding stairs -->
+    <g>
+      <polygon points="306,204 316,204 352,262 336,262" fill="#e6e9ef" stroke="#8d95a6"/>
+      <g stroke="#8d95a6" stroke-width="1.5">
+        <line x1="312" y1="214" x2="322" y2="214"/><line x1="318" y1="224" x2="329" y2="224"/>
+        <line x1="324" y1="234" x2="335" y2="234"/><line x1="330" y1="244" x2="342" y2="244"/>
+        <line x1="336" y1="254" x2="348" y2="254"/>
+      </g>
+    </g>
+    <!-- red carpet -->
+    <polygon points="336,262 352,262 300,316 236,316" fill="#b3121f"/>
+    <!-- two leaders meeting at the foot of the stairs -->
+    <g>
+      <circle cx="322" cy="246" r="7" fill="#e9c9a8"/>
+      <rect x="315" y="253" width="14" height="26" rx="4" fill="#1d2b4f"/>
+      <circle cx="298" cy="248" r="7" fill="#e9c9a8"/>
+      <rect x="291" y="255" width="14" height="26" rx="4" fill="#23252b"/>
+      <line x1="305" y1="264" x2="315" y2="264" stroke="#e9c9a8" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <!-- three flags: United States, China, Russia -->
+    <g transform="translate(-12 0)">
+      <line x1="388" y1="216" x2="388" y2="286" stroke="#ddd" stroke-width="3"/>
+      <rect x="389" y="216" width="42" height="26" fill="#fff"/>
+      <g fill="#b22234">
+        <rect x="389" y="216" width="42" height="2"/><rect x="389" y="220" width="42" height="2"/>
+        <rect x="389" y="224" width="42" height="2"/><rect x="389" y="228" width="42" height="2"/>
+        <rect x="389" y="232" width="42" height="2"/><rect x="389" y="236" width="42" height="2"/>
+        <rect x="389" y="240" width="42" height="2"/>
+      </g>
+      <rect x="389" y="216" width="18" height="14" fill="#3c3b6e"/>
+
+      <line x1="420" y1="230" x2="420" y2="300" stroke="#ddd" stroke-width="3"/>
+      <rect x="421" y="230" width="42" height="28" fill="#de2910"/>
+      <polygon points="428,235 429.8,240 435,240 430.8,243 432.4,248 428,245 423.6,248 425.2,243 421,240 426.2,240" fill="#ffde00" transform="translate(2 0)"/>
+      <circle cx="440" cy="236" r="1.6" fill="#ffde00"/><circle cx="443" cy="241" r="1.6" fill="#ffde00"/>
+      <circle cx="443" cy="247" r="1.6" fill="#ffde00"/><circle cx="440" cy="252" r="1.6" fill="#ffde00"/>
+
+      <line x1="356" y1="236" x2="356" y2="300" stroke="#ddd" stroke-width="3"/>
+      <rect x="357" y="236" width="30" height="7" fill="#ffffff"/>
+      <rect x="357" y="243" width="30" height="7" fill="#0039a6"/>
+      <rect x="357" y="250" width="30" height="7" fill="#d52b1e"/>
+    </g>
+    <text x="30" y="30" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="2" fill="#f5f0e6">SHENZHEN · APEC 2026</text>
+  </svg>
+  <div class="text">
+    <div class="tag">China · APEC summit</div>
+    <h1>Xi greets Trump on the tarmac in Shenzhen</h1>
+    <p>Xi breaks protocol to meet Trump's plane at the APEC summit. Putin arrives for talks with Xi; Trump–Xi–Putin talks are set for Thursday.</p>
+    <ul class="also">
+      <li>Xi tells the summit China will oppose protectionism</li>
+      <li>Earlier in Manila, Trump and Marcos announce a trade deal</li>
+    </ul>
+  </div>
+</section>
+
+<!-- EIGHT MORE STORIES -->
+<section class="grid">
+
+  <article class="card">
+    <svg viewBox="0 0 92 92" aria-label="Drones over an air base">
+      <circle cx="46" cy="46" r="45" fill="#f2dfc4"/>
+      <path d="M10 70 L82 70 L82 76 L10 76 Z" fill="#9b8e78"/>
+      <rect x="54" y="56" width="18" height="14" fill="#6e6553"/>
+      <path d="M58 56 Q63 44 68 56" fill="none" stroke="#6e6553" stroke-width="3"/>
+      <g fill="#2a2d34">
+        <path d="M18 30 L34 26 L30 30 L34 34 Z"/><rect x="22" y="29" width="16" height="2.5"/>
+        <path d="M34 46 L50 42 L46 46 L50 50 Z"/><rect x="38" y="45" width="16" height="2.5"/>
+      </g>
+      <g stroke="#b3121f" stroke-width="2" stroke-dasharray="3 3"><line x1="40" y1="31" x2="62" y2="54"/></g>
+      <g fill="#e8762c"><polygon points="74,26 77,33 84,32 79,37 82,44 75,40 70,45 70,38 64,34 71,32"/></g>
+    </svg>
+    <div>
+      <div class="tag">Gulf · Iran war</div>
+      <h2>Iran drones target US base in Kuwait</h2>
+      <p>Bahrain intercepts attacks; follows a US strike on Iran's Qeshm Island</p>
+    </div>
+  </article>
+
+  <article class="card">
+    <svg viewBox="0 0 92 92" aria-label="Damaged apartment block">
+      <circle cx="46" cy="46" r="45" fill="#dbe4f2"/>
+      <rect x="22" y="34" width="40" height="44" fill="#5b6274"/>
+      <polygon points="62,34 70,44 62,52" fill="#dbe4f2"/>
+      <g fill="#f6d38a">
+        <rect x="27" y="40" width="7" height="7"/><rect x="38" y="40" width="7" height="7"/>
+        <rect x="27" y="52" width="7" height="7"/><rect x="49" y="52" width="7" height="7"/>
+        <rect x="27" y="64" width="7" height="7"/><rect x="38" y="64" width="7" height="7"/>
+      </g>
+      <path d="M54 40 Q60 22 72 26 Q66 30 70 36 Q62 32 58 42 Z" fill="#e8762c"/>
+      <path d="M58 30 Q62 14 76 16" fill="none" stroke="#8a8f99" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+      <rect x="0" y="78" width="92" height="4" fill="#5b6274" opacity="0.5"/>
+      <rect x="10" y="14" width="22" height="7" fill="#0057b7"/><rect x="10" y="21" width="22" height="7" fill="#ffd700"/>
+    </svg>
+    <div>
+      <div class="tag">Ukraine</div>
+      <h2>Russian strikes kill at least five</h2>
+      <p>141 drones launched overnight; deaths in Odesa and Donetsk region</p>
+    </div>
+  </article>
+
+  <article class="card">
+    <svg viewBox="0 0 92 92" aria-label="Lightning bolt and euro sign with a falling arrow">
+      <circle cx="46" cy="46" r="45" fill="#f4e7b5"/>
+      <polygon points="40,12 22,50 38,50 30,80 62,38 46,38 56,12" fill="#2a2d34"/>
+      <text x="62" y="70" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#b3121f">€</text>
+      <path d="M76 26 L76 46 M70 40 L76 47 L82 40" fill="none" stroke="#b3121f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="6" y="14" width="18" height="5" fill="#000"/><rect x="6" y="19" width="18" height="5" fill="#dd0000"/><rect x="6" y="24" width="18" height="5" fill="#ffce00"/>
+    </svg>
+    <div>
+      <div class="tag">Germany</div>
+      <h2>Merz coalition cuts electricity tax</h2>
+      <p>Falls to the EU minimum from January 2027, costing about €5.4bn a year</p>
+    </div>
+  </article>
+
+  <article class="card">
+    <svg viewBox="0 0 92 92" aria-label="Garment and a protest placard">
+      <circle cx="46" cy="46" r="45" fill="#d8eadf"/>
+      <path d="M16 34 L28 24 L36 28 Q42 34 48 28 L56 24 L68 34 L60 42 L56 38 L56 74 L28 74 L28 38 L24 42 Z" fill="#006a4e"/>
+      <circle cx="42" cy="50" r="7" fill="#f42a41"/>
+      <rect x="60" y="44" width="24" height="16" fill="#fff" stroke="#2a2d34" stroke-width="2"/>
+      <rect x="71" y="60" width="3" height="20" fill="#2a2d34"/>
+      <text x="72" y="56" text-anchor="middle" font-family="Segoe UI, Arial" font-size="9" font-weight="800" fill="#b3121f">PAY</text>
+    </svg>
+    <div>
+      <div class="tag">Bangladesh</div>
+      <h2>Police clash with garment workers</h2>
+      <p>Thousands near Dhaka demand higher minimum wages; factories shut</p>
+    </div>
+  </article>
+
+  <article class="card">
+    <svg viewBox="0 0 92 92" aria-label="Two armies facing each other across a border">
+      <circle cx="46" cy="46" r="45" fill="#efd9c6"/>
+      <line x1="46" y1="10" x2="46" y2="82" stroke="#2a2d34" stroke-width="3" stroke-dasharray="6 5"/>
+      <g fill="#4f5b3a">
+        <rect x="10" y="48" width="26" height="10" rx="3"/><rect x="16" y="41" width="14" height="8" rx="2"/>
+        <rect x="29" y="43" width="14" height="3"/>
+        <rect x="56" y="48" width="26" height="10" rx="3"/><rect x="62" y="41" width="14" height="8" rx="2"/>
+        <rect x="49" y="43" width="14" height="3"/>
+      </g>
+      <g fill="#2a2d34"><circle cx="15" cy="60" r="3"/><circle cx="23" cy="60" r="3"/><circle cx="31" cy="60" r="3"/>
+        <circle cx="61" cy="60" r="3"/><circle cx="69" cy="60" r="3"/><circle cx="77" cy="60" r="3"/></g>
+      <polygon points="46,20 50,28 42,28" fill="#b3121f"/>
+    </svg>
+    <div>
+      <div class="tag">Horn of Africa</div>
+      <h2>Ethiopia and Eritrea mass troops on border</h2>
+      <p>Conflict monitors say the armies are now within striking distance</p>
+    </div>
+  </article>
+
+  <article class="card">
+    <svg viewBox="0 0 92 92" aria-label="Capitol dome and a ballot with a tick">
+      <circle cx="46" cy="46" r="45" fill="#dfe3f0"/>
+      <rect x="18" y="62" width="48" height="10" fill="#1d2b4f"/>
+      <rect x="22" y="48" width="40" height="14" fill="#f5f0e6" stroke="#1d2b4f" stroke-width="2"/>
+      <g stroke="#1d2b4f" stroke-width="2"><line x1="28" y1="49" x2="28" y2="61"/><line x1="36" y1="49" x2="36" y2="61"/><line x1="48" y1="49" x2="48" y2="61"/><line x1="56" y1="49" x2="56" y2="61"/></g>
+      <path d="M26 48 Q42 22 58 48 Z" fill="#f5f0e6" stroke="#1d2b4f" stroke-width="2"/>
+      <rect x="40" y="22" width="4" height="10" fill="#1d2b4f"/>
+      <rect x="58" y="16" width="26" height="30" fill="#fff" stroke="#1d2b4f" stroke-width="2"/>
+      <path d="M63 31 L69 38 L79 23" fill="none" stroke="#1f6fd1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <div class="tag">United States</div>
+      <h2>Democrat Peltola wins Alaska Senate seat</h2>
+      <p>AP calls the last Senate race: incumbent Sullivan unseated</p>
+    </div>
+  </article>
+
+  <article class="card">
+    <svg viewBox="0 0 92 92" aria-label="Game controller">
+      <circle cx="46" cy="46" r="45" fill="#f1d6e6"/>
+      <path d="M20 40 Q22 30 32 30 L60 30 Q70 30 72 40 L78 60 Q80 70 72 70 Q66 70 62 62 L30 62 Q26 70 20 70 Q12 70 14 60 Z" fill="#2a2d34"/>
+      <rect x="27" y="42" width="14" height="4" fill="#f5f0e6"/><rect x="32" y="37" width="4" height="14" fill="#f5f0e6"/>
+      <circle cx="58" cy="40" r="3" fill="#e8762c"/><circle cx="64" cy="46" r="3" fill="#1f6fd1"/>
+      <circle cx="52" cy="46" r="3" fill="#2fa36b"/><circle cx="58" cy="52" r="3" fill="#d6455d"/>
+    </svg>
+    <div>
+      <div class="tag">Culture</div>
+      <h2>GTA VI finally goes on sale</h2>
+      <p>Rolling midnight launch starts in New Zealand, 13 years after GTA V</p>
+    </div>
+  </article>
+
+  <article class="card">
+    <svg viewBox="0 0 92 92" aria-label="A ring of ten members with one stepping away">
+      <circle cx="46" cy="46" r="45" fill="#e2ecd9"/>
+      <circle cx="40" cy="46" r="22" fill="none" stroke="#9aa79a" stroke-width="2" stroke-dasharray="4 4"/>
+      <g fill="#1d2b4f">
+        <circle cx="40" cy="24" r="4.5"/><circle cx="53" cy="28" r="4.5"/><circle cx="61" cy="39" r="4.5"/>
+        <circle cx="53" cy="64" r="4.5"/><circle cx="40" cy="68" r="4.5"/>
+        <circle cx="27" cy="64" r="4.5"/><circle cx="19" cy="53" r="4.5"/><circle cx="19" cy="39" r="4.5"/><circle cx="27" cy="28" r="4.5"/>
+      </g>
+      <circle cx="78" cy="56" r="5.5" fill="#b3121f"/>
+      <path d="M64 52 L72 55" stroke="#b3121f" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <div class="tag">Myanmar</div>
+      <h2>Myanmar to review its ASEAN ties</h2>
+      <p>Leader Min Aung Hlaing tells parliament relations with the bloc are under review</p>
+    </div>
+  </article>
+
+</section>
+
+<footer class="footer">
+  <span>Every story here happened or was first reported on 18 November 2026.</span>
+  <span>From AP, Reuters, AFP, Bloomberg, CNBC, Al Jazeera and Anadolu reports</span>
+</footer>
+
+</body>
+</html>
