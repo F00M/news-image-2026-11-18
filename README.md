@@ -5,33 +5,37 @@
 [![reward](https://make.fun/badge/news-image-20261118/F00M/news-image-2026-11-18/reward.svg)](https://make.fun/bounty/news-image-20261118?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261118)
 
 The world's news of **Wednesday 18 November 2026** on one page, laid out like a newspaper front page:
-a 1024 × 1024 picture with the date across the top, three illustrated lead stories, eight more stories with
-small icons, a world map with a marker on the place of each story, key figures, and a numbered list of twenty
-more stories. 31 stories in all, from every continent, each one checked to have happened or been first
-reported on 18 November.
+a 1024 × 1024 picture with the date across the top, a bar counting the stories per region, the day in numbers,
+four illustrated lead stories, twelve more drawn stories, a world map with a pin on each drawn story's place,
+and a numbered list of 44 more stories. 60 stories in all, from every region, each one checked to have happened
+or been first reported on 18 November. A "date check" strip names the stories left out because they were first
+reported on 17 November, and the events that had not happened yet.
 
 ![The world on 18 November 2026](entry.png)
 
 The lead stories:
 
-1. **APEC, Shenzhen:** Xi meets Trump at the airport; Trump and Putin shake hands at the welcome banquet, their first meeting since 2025; three-way talks are set for Thursday.
-2. **Iran war:** Iran's drones target the US air base at Ali Al Salem in Kuwait, and Bahrain intercepts Iranian attacks, after a US strike on Qeshm Island. Shown on a close-up map of the northern Gulf.
-3. **Ukraine:** the EU proposes a €45bn loan (€20bn budget, €25bn military) for 2027, repaid only if Russia pays reparations; Russian strikes kill at least five.
+1. **APEC, Shenzhen:** Xi greets Trump on the tarmac; Trump and Putin shake hands at the welcome banquet; three-way talks are set for Thursday.
+2. **Iran war:** Iran's drones target the US air base at Ali Al Salem in Kuwait, and Bahrain intercepts attacks, after a US strike on Qeshm Island. Shown on a close-up map of the northern Gulf.
+3. **Ukraine:** the EU offers a €45bn loan (€20bn budget, €25bn military) for 2027, repaid only if Russia pays reparations; three Russian strikes on Odesa's historic centre kill four.
+4. **Space:** Voyager 1 becomes the first craft one light-day (25.9bn km) from Earth.
 
-Then: Israeli tanks push into central Gaza; Democrats nominate Hakeem Jeffries for speaker; COP31 splits over a
-fossil-fuel phase-out; Voyager 1 reaches one light-day from Earth; UK inflation rises to 3.6%; Cyclone Akvan
-nears India; garment workers clash with police near Dhaka; GTA VI goes on sale. The list adds Germany,
-Venezuela, Ethiopia and Eritrea, Sudan, Kenya, DR Congo, Myanmar, the Philippines, Sri Lanka, Iraq, Serbia,
-Russia, the US, tennis, oil, and NATO.
+Drawn as well: Israeli tanks in central Gaza; Democrats pick Hakeem Jeffries for speaker; the Fed minutes and a
+561-point fall in the Dow; Anthropic prices the biggest IPO on record; COP31 split over fossil fuels; UK inflation at
+3.6%; Cyclone Akvan nearing India; garment-wage clashes near Dhaka; Amnesty on drone strikes in El Obeid, Sudan; a
+migrant boat capsized off Senegal; Category 5 Cyclone Xavier in the Cook Islands; a record $190.4m Van Gogh. The
+list adds Japan, South Korea, Indonesia, Pakistan, Kashmir, the Philippines, Myanmar, Sri Lanka, Thailand, Kuwait,
+Iraq, Germany, Serbia, the UK, Russia, the ECB, the Vatican, NATO, Venezuela, Haiti, Brazil, Mexico, Peru, the FDA,
+Ethiopia and Eritrea, Kenya, DR Congo, Uganda, Egypt, Australia, Fiji, sport, games, gold and oil.
 
 How it is made:
 
 1. [tools/build-map.mjs](tools/build-map.mjs) draws two maps from Natural Earth's 1:110m countries (public
    domain): the world locator, [design/world-map.svg](design/world-map.svg), in the Equal Earth projection, with
-   the countries in the news shaded and a numbered pin on each story's place; and the close-up of the northern
-   Gulf, [design/gulf-map.svg](design/gulf-map.svg), for the Iran story.
-2. [design/front-page.html](design/front-page.html) is the page: hand-written HTML and CSS with inline SVG
-   illustrations and icons around those maps.
+   the countries in the news shaded, a numbered pin on each drawn story's place and a dot for each brief; and
+   the close-up of the northern Gulf, [design/gulf-map.svg](design/gulf-map.svg), for the Iran story.
+2. [design/front-page.html](design/front-page.html) is the page: hand-written HTML and CSS with sixteen inline
+   SVG drawings around those maps. Opened with `#check`, it outlines any box whose text overflows.
 3. [tools/render.mjs](tools/render.mjs) renders the page to `entry.png` with a local headless Chrome and checks
    the size limits.
 4. The entry program, [main.ts](main.ts), runs with no network: it checks the stored PNG and copies it to
